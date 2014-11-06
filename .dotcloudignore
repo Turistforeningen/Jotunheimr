@@ -1,0 +1,17 @@
+.*swp
+.DS_Store
+.dotcloud/
+.dotcloudignore
+.git
+.gitignore
+.jshintrc
+.vim.custom
+.vagrant/
+img.jpg
+README.md
+Vagrantfile
+node_modules/
+lib/
+test/
+env/
+npm-debug.log

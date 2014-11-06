@@ -1,0 +1,49 @@
+{
+  "name": "s3-image-upload",
+  "version": "1.0.0",
+  "description": "Server for processing and uploading images to Amazon S3",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test",
+    "src": "src",
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "supervisor -w src -- src/server.litcoffee",
+    "test": "mocha -b -c --check-leaks test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
+    "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/; if [ -d .git/hooks/ ]; then cp config/git-hooks/pre-commit .git/hooks/.; fi",
+    "test-drone": "node_modules/.bin/mocha test/suite.coffee -R spec --compilers coffee:coffee-script/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Turistforeningen/s3-image-upload.git"
+  },
+  "keywords": [
+    "Express",
+    "Connect",
+    "Upload",
+    "AWS",
+    "S3",
+    "Images"
+  ],
+  "author": "Hans Kristian Flaatten <hans.kristian.flaatten@turistforeningen.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turistforeningen/s3-image-upload/issues"
+  },
+  "homepage": "https://github.com/Turistforeningen/s3-image-upload",
+  "dependencies": {
+    "async": "~0.9",
+    "coffee-script": "~1",
+    "errorhandler": "~1",
+    "express": "~4",
+    "morgan": "~1",
+    "multer": "~0.1",
+    "raven": "~0.6",
+    "s3-uploader": "~0.4"
+  },
+  "devDependencies": {
+    "mocha": "~2",
+    "supervisor": "~0.6"
+  }
+}

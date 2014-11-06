@@ -1,0 +1,13 @@
+www:
+  type: custom
+  buildscript: config/builder
+  ports:
+    www: http
+  process: node lib/server.js
+  approot: .
+  node_version: v0.10.33
+  environment:
+    MAGICK_MEMORY_LIMIT: 32MB
+  systempackages:
+    - imagemagick
+
