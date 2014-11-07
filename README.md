@@ -9,7 +9,7 @@ Jötunheimr [![Build Status](https://drone.io/github.com/Turistforeningen/Jotunh
 > home of Þjazi, were both located in Jötunheimr, which was ruled by King Thrym.
 > Glæsisvellir was a location in Jötunheimr, where lived the giant Gudmund,
 > father of Höfund. Utgard was a stronghold surrounding the land of the
-> giants.[1]
+> giants.
 
 This Node.JS microservice processes images before uploading them to a designated
 bucket on AWS S3. Utilizing [express](https://github.com/strongloop/express) for
