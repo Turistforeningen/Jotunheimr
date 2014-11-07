@@ -36,6 +36,7 @@ npm install jotunheimr
 ### Environment Variables
 
 * `PORT_WWW` - server listening port
+* `ALLOW_ORIGINS` - allowed origins whitelist (comma seperated)
 * `AWS_ACCESS_KEY_ID` AWS public key
 * `AWS_SECRET_ACCESS_KEY` AWS secret key
 * `AWS_BUCKET_NAME` AWS S3 bucket name

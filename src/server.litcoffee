@@ -36,12 +36,15 @@
         maxWidth: 320
       }]
 
+    origins = process.env.ALLOW_ORIGINS?.split(',') or []
+
     app.all '/upload', (req, res, next) ->
       res.once 'close', -> sentry.captureResClose res
 
-      return next() if not req.get 'Origin'
+      if not req.get('Origin') or not (req.get('Origin') in origins)
+        return res.status(403).json message: 'Bad Origin Header'
 
-      res.set 'Access-Control-Allow-Origin', '*'
+      res.set 'Access-Control-Allow-Origin', req.get('Origin')
       res.set 'Access-Control-Allow-Methods', 'POST'
       res.set 'Access-Control-Allow-Headers', 'X-Requested-With, Content-Type'
       res.set 'Access-Control-Allow-Max-Age', 0
