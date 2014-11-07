@@ -1,7 +1,7 @@
 {
-  "name": "s3-image-upload",
+  "name": "jotunheimr",
   "version": "1.0.0",
-  "description": "Server for processing and uploading images to Amazon S3",
+  "description": "Microservice for processing images and uploading them to a designated bucket on AWS S3",
   "main": "lib/index.js",
   "directories": {
     "test": "test",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Turistforeningen/s3-image-upload.git"
+    "url": "https://github.com/Turistforeningen/Jotunheimr.git"
   },
   "keywords": [
     "Express",
@@ -29,9 +29,9 @@
   "author": "Hans Kristian Flaatten <hans.kristian.flaatten@turistforeningen.no>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Turistforeningen/s3-image-upload/issues"
+    "url": "https://github.com/Turistforeningen/Jotunheimr/issues"
   },
-  "homepage": "https://github.com/Turistforeningen/s3-image-upload",
+  "homepage": "https://github.com/Turistforeningen/Jotunheimr",
   "dependencies": {
     "async": "~0.9",
     "coffee-script": "~1",
