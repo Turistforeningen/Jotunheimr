@@ -49,14 +49,7 @@
       return res.send 200 if req.method is 'OPTIONS'
       return next()
 
-    app.use '/upload', multer dest: require('os').tmpdir()
-
-    app.options '/upload', (req, res, next) ->
-      res.set 'access-control-allow-methods', 'OPTIONS, POST'
-      res.set 'access-control-allow-headers', 'Content-Type'
-      res.end()
-
-    app.post '/upload', (req, res, next) ->
+    app.post '/upload', multer(dest: require('os').tmpdir()), (req, res, next) ->
       console.log "Recieved #{Object.keys(req.files).length} files"
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
