@@ -1,6 +1,8 @@
+    compression  = require 'compression'
     express      = require 'express'
     errorHandler = require 'errorhandler'
     morgan       = require 'morgan'
+    responseTime = require 'response-time'
 
     multer       = require 'multer'
     async        = require 'async'
@@ -10,6 +12,8 @@
 
     app = express()
     app.use morgan 'combined'
+    app.use compression()
+    app.use responseTime()
 
     Upload = require 's3-uploader'
     s3 = new Upload process.env.AWS_BUCKET_NAME,
@@ -47,6 +51,7 @@
       res.set 'Access-Control-Allow-Origin', req.get('Origin')
       res.set 'Access-Control-Allow-Methods', 'POST'
       res.set 'Access-Control-Allow-Headers', 'X-Requested-With, Content-Type'
+      res.set 'Access-Control-Expose-Headers', 'X-Response-Time'
       res.set 'Access-Control-Allow-Max-Age', 0
 
       return res.send 200 if req.method is 'OPTIONS'

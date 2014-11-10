@@ -35,11 +35,13 @@
   "dependencies": {
     "async": "~0.9",
     "coffee-script": "~1",
+    "compression": "^1.2.0",
     "errorhandler": "~1",
     "express": "~4",
     "morgan": "~1",
     "multer": "~0.1",
     "raven": "~0.6",
+    "response-time": "^2.2.0",
     "s3-uploader": "~0.4"
   },
   "devDependencies": {
