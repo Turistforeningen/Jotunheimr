@@ -6,6 +6,7 @@
 
     multer       = require 'multer'
     async        = require 'async'
+    dms2dec      = require 'dms2dec'
 
     raven        = require 'raven'
     sentry       = require './sentry'
@@ -65,6 +66,17 @@
         # @TODO check if file is valid image
         s3.upload req.files[key].path, {}, (err, images, meta) ->
           return cb err if err
+
+          if meta.exif['exif:GPSLatitude'] and meta.exif['exif:GPSLongitude']
+            meta.geojson =
+              type: 'Point'
+              coordinates: dms2dec \
+                meta.exif['exif:GPSLatitude'], \
+                meta.exif['exif:GPSLatitudeRef'], \
+                meta.exif['exif:GPSLongitude'], \
+                meta.exif['exif:GPSLongitudeRef']
+              .reverse()
+
           return cb null, versions: images.splice(1), meta: meta
       , (err, files) ->
         return next err if err
