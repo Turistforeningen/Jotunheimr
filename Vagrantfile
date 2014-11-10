@@ -45,8 +45,6 @@ PATH=$PATH:/vagrant/node_modules/.bin
 cd /vagrant && rm -rf node_modules
 [ -f package.json ] && npm install
 
-echo "cd /vagrant" >> /home/vagrant/.bashrc
-
 SCRIPT
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
