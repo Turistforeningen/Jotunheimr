@@ -1,6 +1,5 @@
     compression  = require 'compression'
     express      = require 'express'
-    errorHandler = require 'errorhandler'
     morgan       = require 'morgan'
     responseTime = require 'response-time'
 
@@ -48,7 +47,9 @@
       res.once 'close', -> sentry.captureResClose res
 
       if not req.get('Origin') or not (req.get('Origin') in origins)
-        return res.status(403).json message: 'Bad Origin Header'
+        error = new Error "Bad Origin Header #{req.get('Origin')}"
+        error.status 403
+        return next error
 
       res.set 'Access-Control-Allow-Origin', req.get('Origin')
       res.set 'Access-Control-Allow-Methods', 'POST'
@@ -84,7 +85,17 @@
         return res.status(201).json files
 
     app.use raven.middleware.express sentry
-    app.use errorHandler dumpExceptions: true, showStack: true
+    app.use (err, req, res, next) ->
+      if not err.status or err.status >= 500
+        sentry.captureError error
+
+        console.error err.message
+        console.error err.stack
+
+        res.status(err.status or 500).json message: 'Internal Server Error'
+      else
+        sentry.captureMessage err.message, level: 'warning', req: req
+        res.status(err.status).json message: err.message
 
     if not module.parent
       app.listen process.env.PORT_WWW

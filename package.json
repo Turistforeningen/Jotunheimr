@@ -37,7 +37,6 @@
     "coffee-script": "~1",
     "compression": "~1.2",
     "dms2dec": "~1.0",
-    "errorhandler": "~1",
     "express": "~4",
     "morgan": "~1",
     "multer": "~0.1",
