@@ -64,7 +64,11 @@
       console.log "Recieved #{Object.keys(req.files).length} files"
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
-        # @TODO check if file is valid image
+        if req.files[key].extension not in ['jpg', 'jpeg', 'png', 'gif', 'tiff']
+          error = new Error "Invalid Image #{req.files[key].extension}"
+          error.status = 422
+          return cb error
+
         s3.upload req.files[key].path, {}, (err, images, meta) ->
           return cb err if err
 
