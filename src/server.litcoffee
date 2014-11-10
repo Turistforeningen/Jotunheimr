@@ -21,6 +21,7 @@
       awsBucketPath: process.env.AWS_BUCKET_PATH
       awsBucketAcl: 'public-read'
       awsHttpTimeout: 60000
+      returnExif: true
 
       versions: [{
         original: true
@@ -64,7 +65,7 @@
         # @TODO check if file is valid image
         s3.upload req.files[key].path, {}, (err, images, meta) ->
           return cb err if err
-          return cb null, images.splice(1)
+          return cb null, versions: images.splice(1), meta: meta
       , (err, files) ->
         return next err if err
         sentry.captureHeaderSent req, files if res._headerSent
