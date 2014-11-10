@@ -19,11 +19,13 @@ resizing and uploading to AWS S3.
 
 ## Features
 
+* REST API
 * CORS support
+* Image type validation
 * Image resizing
-* Color conversion
+* Image color space conversion
 * Image auto orientate
-* Upload to AWS S3
+* AWS S3 upload
 
 ## Install
 
