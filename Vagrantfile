@@ -10,9 +10,9 @@ apt-get update
 apt-get install -y build-essential git curl imagemagick
 
 # Read secret environment variables
-AWS_ID=`cat ./env/AWS_ACCESS_KEY_ID`
-AWS_KEY=`cat ./env/AWS_SECRET_ACCESS_KEY`
-AWS_NAME=`cat ./env/AWS_BUCKET_NAME`
+AWS_ID=`cat /vagrant/env/AWS_ACCESS_KEY_ID`
+AWS_KEY=`cat /vagrant/env/AWS_SECRET_ACCESS_KEY`
+AWS_NAME=`cat /vagrant/env/AWS_BUCKET_NAME`
 
 # Vagratnt Environment Varaibles
 echo "Setting environment variables..."
