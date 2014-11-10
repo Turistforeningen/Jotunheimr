@@ -51,7 +51,7 @@ npm start
 ### Upload
 
 ```
-curl -X POST -F image=/path/to/file.jpg http://localhost:4010/upload
+curl -X POST -H "Origin: example.com" -F image=/path/to/file.jpg http://localhost:4010/upload
 ```
 
 ## [MIT lisenced](https://github.com/Turistforeningen/Jotunheimr/blob/master/LICENSE)
