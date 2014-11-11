@@ -69,7 +69,7 @@
       librato.measure 'image.upload', Object.keys(req.files).length, {}
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
-        if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif', 'tiff']
+        if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
           error = new Error "Invalid Image #{req.files[key].extension}"
           error.status = 422
           return cb error
