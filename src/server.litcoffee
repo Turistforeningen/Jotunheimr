@@ -91,7 +91,7 @@
     app.use raven.middleware.express sentry
     app.use (err, req, res, next) ->
       if not err.status or err.status >= 500
-        sentry.captureError error
+        sentry.captureError err
 
         console.error err.message
         console.error err.stack
