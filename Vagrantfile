@@ -7,7 +7,8 @@ $script = <<SCRIPT
 # Update & Install
 echo 'Updating and installing ubuntu packages...'
 apt-get update
-apt-get install -y build-essential git curl imagemagick
+apt-get install -y build-essential python-setuptools git curl imagemagick
+easy_install pip && pip install setuptools --no-use-wheel --upgrade && pip install dotcloud
 
 # Read secret environment variables
 AWS_ID=`cat /vagrant/env/AWS_ACCESS_KEY_ID`
