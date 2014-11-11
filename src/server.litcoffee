@@ -1,3 +1,5 @@
+    url          = require 'url'
+
     compression  = require 'compression'
     express      = require 'express'
     morgan       = require 'morgan'
@@ -46,7 +48,9 @@
     app.all '/upload', (req, res, next) ->
       res.once 'close', -> sentry.captureResClose res
 
-      if not req.get('Origin') or not (req.get('Origin') in origins)
+      origin = url.parse req.get('Origin') or ''
+
+      if origin.hostname not in origins
         error = new Error "Bad Origin Header #{req.get('Origin')}"
         error.status = 403
         return next error
