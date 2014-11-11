@@ -7,7 +7,7 @@ $script = <<SCRIPT
 # Update & Install
 echo 'Updating and installing ubuntu packages...'
 apt-get update
-apt-get install -y build-essential git curl imagemagick
+apt-get install -y build-essential git curl libpng-dev libjpeg-dev libtiff-dev
 
 # Read secret environment variables
 AWS_ID=`cat /vagrant/env/AWS_ACCESS_KEY_ID`
@@ -30,6 +30,43 @@ echo "export LIBRATO_USER=$LIBRATO_USER"                >> /home/vagrant/.bashrc
 echo "export LIBRATO_TOKEN=$LIBRATO_TOKEN"              >> /home/vagrant/.bashrc
 echo "export LIBRATO_PREFIX=jotunheimr."                >> /home/vagrant/.bashrc
 echo "\ncd /vagrant"                                    >> /home/vagrant/.bashrc
+
+# Building Imagemagic from source
+curl -L http://imagemagick.org/download/releases/ImageMagick-6.8.9-10.tar.gz | tar -zxf-
+cd ImageMagick-6.8.9-10/
+./configure \
+  --disable-static \
+  --enable-shared \
+  --with-jp2 \
+  --with-jpeg \
+  --with-png \
+  --with-quantum-depth=8 \
+  --with-rsvg \
+  --with-webp \
+  --without-bzlib \
+  --without-djvu \
+  --without-dps \
+  --without-fftw \
+  --without-fontconfig \
+  --without-freetype \
+  --without-gvc \
+  --without-jbig \
+  --without-lcms \
+  --without-lcms2 \
+  --without-lqr \
+  --without-lzma \
+  --without-magick-plus-plus \
+  --without-openexr \
+  --without-pango \
+  --without-perl \
+  --without-tiff \
+  --without-wmf \
+  --without-x \
+  --without-xml \
+  --without-zlib
+make
+make install
+ldconfig /usr/local/lib
 
 # NodeJS via NVM
 echo "Installing NVM..."

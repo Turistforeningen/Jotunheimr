@@ -3,7 +3,7 @@
 packages_dir=node_modules
 node_root=/opt/node
 
-[ "$SERVICE_NODE_VERSION" ] && 
+[ "$SERVICE_NODE_VERSION" ] &&
 [ "$SERVICE_NODE_VERSION" != "$(node --version)" ] &&
 (
     rm -rf $node_root/*
@@ -13,6 +13,59 @@ node_root=/opt/node
     ./configure --prefix=$node_root
     make
     make install
+)
+
+#
+# Install ImageMagic
+#
+
+if [ "$(which identify)" ]
+then
+  VERSION=$(identify -version | grep Version | awk '{print substr($0,22,8)}')
+else
+  VERSION=""
+fi
+
+[ "$SERVICE_MAGIC_VERSION" ] &&
+[ "$SERVICE_MAGIC_VERSION" != "$VERSION" ] &&
+(
+  rm -rf ImageMagick*
+  curl -L http://imagemagick.org/download/releases/ImageMagick-$SERVICE_NODE_VERSION.tar.gz | tar -zxf-
+  cd ImageMagick*
+
+  ./configure \
+    --disable-static \
+    --enable-shared \
+    --with-jp2 \
+    --with-jpeg \
+    --with-png \
+    --with-quantum-depth=8 \
+    --with-rsvg \
+    --with-webp \
+    --without-bzlib \
+    --without-djvu \
+    --without-dps \
+    --without-fftw \
+    --without-fontconfig \
+    --without-freetype \
+    --without-gvc \
+    --without-jbig \
+    --without-lcms \
+    --without-lcms2 \
+    --without-lqr \
+    --without-lzma \
+    --without-magick-plus-plus \
+    --without-openexr \
+    --without-pango \
+    --without-perl \
+    --without-tiff \
+    --without-wmf \
+    --without-x \
+    --without-xml \
+    --without-zlib
+  make
+  make install
+  ldconfig /usr/local/lib
 )
 
 cd ${SERVICE_APPROOT:=.}
