@@ -66,7 +66,7 @@
       return next()
 
     app.post '/upload', multer(dest: require('os').tmpdir()), (req, res, next) ->
-      librato.measure 'image.upload', Object.keys(req.files).length, {}
+      librato.logImagesUploaded Object.keys req.files
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
         if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
