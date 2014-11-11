@@ -88,6 +88,9 @@
         sentry.captureHeaderSent req, files if res._headerSent
         return res.status(201).json files
 
+    app.use (req, res, next) ->
+      res.status(404).json message: 'Not Found'
+
     app.use raven.middleware.express sentry
     app.use (err, req, res, next) ->
       if not err.status or err.status >= 500
