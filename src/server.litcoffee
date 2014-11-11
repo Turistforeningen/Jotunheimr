@@ -11,6 +11,7 @@
 
     raven        = require 'raven'
     sentry       = require './sentry'
+    librato      = require './librato'
 
     app = express()
     app.use morgan 'combined'
@@ -65,7 +66,7 @@
       return next()
 
     app.post '/upload', multer(dest: require('os').tmpdir()), (req, res, next) ->
-      console.log "Recieved #{Object.keys(req.files).length} files"
+      librato.measure 'image.upload', Object.keys(req.files).length, {}
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
         if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif', 'tiff']
