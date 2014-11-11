@@ -68,7 +68,7 @@
       console.log "Recieved #{Object.keys(req.files).length} files"
 
       async.mapSeries Object.keys(req.files), (key, cb) ->
-        if req.files[key].extension not in ['jpg', 'jpeg', 'png', 'gif', 'tiff']
+        if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif', 'tiff']
           error = new Error "Invalid Image #{req.files[key].extension}"
           error.status = 422
           return cb error
