@@ -48,7 +48,7 @@
 
       if not req.get('Origin') or not (req.get('Origin') in origins)
         error = new Error "Bad Origin Header #{req.get('Origin')}"
-        error.status 403
+        error.status = 403
         return next error
 
       res.set 'Access-Control-Allow-Origin', req.get('Origin')
