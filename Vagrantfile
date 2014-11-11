@@ -13,6 +13,8 @@ apt-get install -y build-essential git curl imagemagick
 AWS_ID=`cat /vagrant/env/AWS_ACCESS_KEY_ID`
 AWS_KEY=`cat /vagrant/env/AWS_SECRET_ACCESS_KEY`
 AWS_NAME=`cat /vagrant/env/AWS_BUCKET_NAME`
+LIBRATO_USER=`cat /vagrant/env/LIBRATO_USER`
+LIBRATO_TOKEN=`cat /vagrant/env/LIBRATO_TOKEN`
 
 # Vagratnt Environment Varaibles
 echo "Setting environment variables..."
@@ -24,6 +26,9 @@ echo "export AWS_ACCESS_KEY_ID=$AWS_ID"                 >> /home/vagrant/.bashrc
 echo "export AWS_SECRET_ACCESS_KEY=$AWS_KEY"            >> /home/vagrant/.bashrc
 echo "export AWS_BUCKET_NAME=$AWS_NAME"                 >> /home/vagrant/.bashrc
 echo "export AWS_BUCKET_PATH=images_test/"              >> /home/vagrant/.bashrc
+echo "export LIBRATO_USER=$LIBRATO_USER"                >> /home/vagrant/.bashrc
+echo "export LIBRATO_TOKEN=$LIBRATO_TOKEN"              >> /home/vagrant/.bashrc
+echo "export LIBRATO_PREFIX=jotunheimr."                >> /home/vagrant/.bashrc
 echo "\ncd /vagrant"                                    >> /home/vagrant/.bashrc
 
 # NodeJS via NVM
