@@ -74,8 +74,11 @@
           error.status = 422
           return cb error
 
+        t1 = new Date().getTime()
         s3.upload req.files[key].path, {}, (err, images, meta) ->
           return cb err if err
+
+          librato.logImageProcessingTime t1, new Date().getTime()
 
           if meta.exif['exif:GPSLatitude'] and meta.exif['exif:GPSLongitude']
             meta.geojson =
