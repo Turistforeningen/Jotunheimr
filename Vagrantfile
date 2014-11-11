@@ -27,6 +27,7 @@ echo "export AWS_ACCESS_KEY_ID=$AWS_ID"                 >> /home/vagrant/.bashrc
 echo "export AWS_SECRET_ACCESS_KEY=$AWS_KEY"            >> /home/vagrant/.bashrc
 echo "export AWS_BUCKET_NAME=$AWS_NAME"                 >> /home/vagrant/.bashrc
 echo "export AWS_BUCKET_PATH=images_test/"              >> /home/vagrant/.bashrc
+echo "export AWS_BUCKET_REGION=eu-west-1"               >> /home/vagrant/.bashrc
 echo "export LIBRATO_USER=$LIBRATO_USER"                >> /home/vagrant/.bashrc
 echo "export LIBRATO_TOKEN=$LIBRATO_TOKEN"              >> /home/vagrant/.bashrc
 echo "export LIBRATO_PREFIX=jotunheimr."                >> /home/vagrant/.bashrc

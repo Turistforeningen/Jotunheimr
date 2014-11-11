@@ -20,7 +20,7 @@
 
     Upload = require 's3-uploader'
     s3 = new Upload process.env.AWS_BUCKET_NAME,
-      awsBucketUrl: "https://s3-eu-west-1.amazonaws.com/#{process.env.AWS_BUCKET_NAME}/"
+      awsBucketRegion: process.env.AWS_BUCKET_REGION
       awsBucketPath: process.env.AWS_BUCKET_PATH
       awsBucketAcl: 'public-read'
       awsHttpTimeout: 60000

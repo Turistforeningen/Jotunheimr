@@ -43,7 +43,7 @@
     "multer": "~0.1",
     "raven": "~0.6",
     "response-time": "~2",
-    "s3-uploader": "~0.4"
+    "s3-uploader": "~0.5"
   },
   "devDependencies": {
     "mocha": "~2",
