@@ -47,7 +47,14 @@
     origins = process.env.ALLOW_ORIGINS?.split(',') or []
 
     app.all '/upload', (req, res, next) ->
-      res.once 'close', -> sentry.captureResClose res
+      librato.logRequest req.method
+
+      res.once 'close', ->
+        librato.logResponse 'closed'
+        sentry.captureResClose res
+
+      res.once 'finish', ->
+        librato.logResponse res.statusCode
 
       origin = url.parse req.get('Origin') or ''
 
