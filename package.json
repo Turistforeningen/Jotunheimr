@@ -41,7 +41,7 @@
     "librato": "~0.1",
     "morgan": "~1",
     "multer": "~0.1",
-    "raven": "~0.6",
+    "raven": "~0.7",
     "response-time": "~2",
     "s3-uploader": "~0.5"
   },
