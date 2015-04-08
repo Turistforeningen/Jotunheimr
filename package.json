@@ -35,7 +35,7 @@
   "dependencies": {
     "async": "~0.9",
     "coffee-script": "~1",
-    "compression": "~1.2",
+    "compression": "~1.4",
     "dms2dec": "~1.0",
     "express": "~4",
     "librato": "~0.1",
