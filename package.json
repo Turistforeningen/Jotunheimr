@@ -10,9 +10,11 @@
   },
   "scripts": {
     "start": "supervisor -w src -- src/server.litcoffee",
-    "test": "mocha -b -c --check-leaks test/suite.coffee -R progress --compilers coffee:coffee-script/register -w",
-    "postinstall": "rm -rf lib/* && coffee --bare -o lib/ -c src/; if [ -d .git/hooks/ ]; then cp config/git-hooks/pre-commit .git/hooks/.; fi",
-    "test-drone": "node_modules/.bin/mocha test/suite.coffee -R spec --compilers coffee:coffee-script/register"
+    "build": "coffee --compile --bare --output lib/ src/",
+    "prepublish": "coffee --bare --compile --output lib/ src/",
+    "postpublish": "rm -rf lib/*",
+    "test": "NODE_ENV=test mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
+    "test-drone": "NODE_ENV=test node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "mocha": "~2",
+    "supertest": "~0.15",
     "supervisor": "~0.6"
   }
 }
