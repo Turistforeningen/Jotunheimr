@@ -1,0 +1,21 @@
+www:
+  image: starefossen/iojs-imagemagick:1.6-6.9
+  ports:
+    - "8080"
+  volumes:
+    - ".:/usr/src/app"
+  working_dir: /usr/src/app
+  command: npm start
+  environment:
+    - NODE_ENV
+    - ALLOW_ORIGINS
+    - AWS_ACCESS_KEY_ID
+    - AWS_BUCKET_NAME
+    - AWS_BUCKET_PATH
+    - AWS_BUCKET_REGION
+    - AWS_SECRET_ACCESS_KEY
+    - LIBRATO_PREFIX
+    - LIBRATO_TOKEN
+    - LIBRATO_USER
+    - SENTRY_DNS
+
