@@ -7,11 +7,44 @@
     sentry  = require '../sentry'
     librato = require '../librato'
 
+Make a new Express router object for this part of the application.
+
+    api = express.Router()
+
+## Metrics
+
+Agregate metrics for all requests and wheter they succeded (`finish`) or closed
+before the request succeeded (`close`).
+
+    api.use (req, res, next) ->
+      librato.logRequest req.method
+
+      res.once 'close', ->
+        librato.logResponse 'closed'
+        sentry.captureResClose res
+
+      res.once 'finish', ->
+        librato.logResponse res.statusCode
+
+      next()
+
+## GET /
+
+    api.get '/', (req, res, next) ->
+      res.status(204).end()
+
+## POST /upload
+
+Configure [s3-uploader](https://github.com/Turistforeningen/node-s3-uploader) to
+store three versions of the image `320px`, `780px`, and `1040px`. The original
+image is also uploaded but not publicly avaiable.
+
     s3 = new Upload process.env.AWS_BUCKET_NAME,
-      awsBucketRegion: process.env.AWS_BUCKET_REGION
-      awsBucketPath: process.env.AWS_BUCKET_PATH
-      awsBucketAcl: 'public-read'
-      awsHttpTimeout: 60000
+      aws:
+        region: process.env.AWS_BUCKET_REGION
+        path: process.env.AWS_BUCKET_PATH
+        acl: 'public-read'
+        httpOptions: timeout: 60000
       returnExif: true
 
       versions: [
@@ -32,36 +65,31 @@
         maxWidth: 320
       ]
 
-    api = express.Router()
+Configure [multer](https://github.com/expressjs/multer) to store files in the
+OS's temorary directory `tempdir()`. This way we should not need to clean up the
+uploaded files since that should be the job of the OS.
 
-    api.use (req, res, next) ->
-      librato.logRequest req.method
+    multer = require('multer')
+      putSingleFilesInArray: true
+      dest: require('os').tmpdir()
 
-      res.once 'close', ->
-        librato.logResponse 'closed'
-        sentry.captureResClose res
+Configure the `/upload` route handler.
 
-      res.once 'finish', ->
-        librato.logResponse res.statusCode
-
-      next()
-
-    api.get '/', (req, res, next) ->
-      res.status(204).end()
-
-    api.post '/upload', multer(dest: require('os').tmpdir()), (req, res, next) ->
+    api.post '/upload', multer, (req, res, next) ->
       librato.logImagesUploaded Object.keys req.files
 
-      async.mapSeries Object.keys(req.files), (key, cb) ->
-        if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
-          error = new Error "Invalid Image #{req.files[key].extension}"
+      files = []
+      for key, f of req.files
+        files.push file for file in f
+
+      async.mapSeries files, (file, cb) ->
+        if file.extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
+          error = new Error "Invalid Image #{file.extension}"
           error.status = 422
           return cb error
 
-        console.log req.files[key]
-
         t1 = new Date().getTime()
-        s3.upload req.files[key].path, {}, (err, images, meta) ->
+        s3.upload file.path, {}, (err, images, meta) ->
           return cb err if err
 
           librato.logImageProcessingTime t1, new Date().getTime()
