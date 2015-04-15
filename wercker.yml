@@ -1,4 +1,4 @@
-box: wercker/nodejs
+box: starefossen/iojs-imagemagick
 build:
     steps:
         - npm-install
