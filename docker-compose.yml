@@ -1,11 +1,10 @@
 www:
-  image: starefossen/iojs-imagemagick:1.6-6.9
+  build: .
+  volumes:
+    - "src:/usr/src/app/src"
+    - "test:/usr/src/app/test"
   ports:
     - "8080"
-  volumes:
-    - ".:/usr/src/app"
-  working_dir: /usr/src/app
-  command: npm start
   environment:
     - NODE_ENV
     - ALLOW_ORIGINS
@@ -18,4 +17,3 @@ www:
     - LIBRATO_TOKEN
     - LIBRATO_USER
     - SENTRY_DNS
-
