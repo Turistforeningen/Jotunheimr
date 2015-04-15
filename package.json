@@ -9,10 +9,6 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp supervisor -w src -- src/server.litcoffee",
-    "build": "coffee --compile --bare --output lib/ src/",
-    "prepublish": "coffee --bare --compile --output lib/ src/",
-    "postpublish": "rm -rf lib/*",
     "test": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
     "test-drone": "NODE_ENV=test TMPDIR=/tmp node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
   },
