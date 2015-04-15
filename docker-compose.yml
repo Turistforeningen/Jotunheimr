@@ -17,3 +17,4 @@ www:
     - LIBRATO_TOKEN
     - LIBRATO_USER
     - SENTRY_DNS
+  restart: always
