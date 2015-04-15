@@ -5,7 +5,7 @@ www:
     www: http
   process: node lib/server.js
   approot: .
-  node_version: v0.10.33
+  node_version: v0.10.38
   environment:
     MAGICK_MEMORY_LIMIT: 32MB
   systempackages:

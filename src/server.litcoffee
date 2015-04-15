@@ -1,127 +1,118 @@
-    url          = require 'url'
+    express       = require 'express'
+    logger        = require 'morgan'
+    url           = require 'url'
 
-    compression  = require 'compression'
-    express      = require 'express'
-    morgan       = require 'morgan'
-    responseTime = require 'response-time'
+    compression   = require 'compression'
+    responseTime  = require 'response-time'
 
-    multer       = require 'multer'
-    async        = require 'async'
-    dms2dec      = require 'dms2dec'
+    raven         = require 'raven'
+    sentry        = require './sentry'
 
-    raven        = require 'raven'
-    sentry       = require './sentry'
-    librato      = require './librato'
+    #process.env.LIBRATO_INTERVAL ?= 1
+    #librato =
+    #  middleware: require('./librato').middleware.use
+    #  count     : require('./librato').middleware.routeCount
 
-    app = express()
-    app.use morgan 'combined'
+## Configuration
+
+    process.env.PORT_WWW ?= 8080
+
+    app = module.exports = express()
+
+    app.set 'json spaces', 2
+    app.set 'x-powered-by', false
+
     app.use compression()
     app.use responseTime()
 
-    Upload = require 's3-uploader'
-    s3 = new Upload process.env.AWS_BUCKET_NAME,
-      awsBucketRegion: process.env.AWS_BUCKET_REGION
-      awsBucketPath: process.env.AWS_BUCKET_PATH
-      awsBucketAcl: 'public-read'
-      awsHttpTimeout: 60000
-      returnExif: true
+    if app.get('env').toLowerCase() isnt 'test'
+      app.use logger 'dev'
+      #app.use librato.middleware
+      #app.use librato.count name: 'request', period: 1
 
-      versions: [{
-        original: true
-        awsImageAcl: 'private'
-      },{
-        suffix: '-large'
-        quality: 80
-        maxHeight: 1040
-        maxWidth: 1040
-      },{
-        suffix: '-medium'
-        maxHeight: 780
-        maxWidth: 780
-      },{
-        suffix: '-small'
-        maxHeight: 320
-        maxWidth: 320
-      }]
+## CORS
+
+Cross-site HTTP requests are HTTP requests for resources from a different domain
+than the domain of the resource making the request. [Read
+More](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
 
     origins = process.env.ALLOW_ORIGINS?.split(',') or []
 
-    app.all '/upload', (req, res, next) ->
-      librato.logRequest req.method
+    app.use (req, res, next) ->
+      if req.get 'Origin'
+        origin = url.parse req.get('Origin') or ''
 
-      res.once 'close', ->
-        librato.logResponse 'closed'
-        sentry.captureResClose res
+Check if the request Origin is on in the `ALLOW_ORIGINS` list. If not return a
+403 to prevent this Origin from misusing the service.
 
-      res.once 'finish', ->
-        librato.logResponse res.statusCode
+        if origin.hostname not in origins
+          error = new Error "Bad Origin Header #{req.get('Origin')}"
+          error.status = 403
+          return next error
 
-      origin = url.parse req.get('Origin') or ''
+Set the correct CORS headers.
 
-      if origin.hostname not in origins
-        error = new Error "Bad Origin Header #{req.get('Origin')}"
-        error.status = 403
-        return next error
+        res.set 'Access-Control-Allow-Origin', req.get('Origin')
+        res.set 'Access-Control-Allow-Methods', 'GET, POST'
+        res.set 'Access-Control-Allow-Headers', 'X-Requested-With, Content-Type'
+        res.set 'Access-Control-Expose-Headers', 'X-Response-Time'
+        res.set 'Access-Control-Allow-Max-Age', 0
 
-      res.set 'Access-Control-Allow-Origin', req.get('Origin')
-      res.set 'Access-Control-Allow-Methods', 'POST'
-      res.set 'Access-Control-Allow-Headers', 'X-Requested-With, Content-Type'
-      res.set 'Access-Control-Expose-Headers', 'X-Response-Time'
-      res.set 'Access-Control-Allow-Max-Age', 0
+Browsers check for CORS support by doing a "preflight". This means sending a
+HTTP `OPTIONS` request to the server and checking the returned CORS-headers. No
+body is required for this request so we can safely end this request now.
 
-      return res.send 200 if req.method is 'OPTIONS'
+      if req.method is 'OPTIONS' and req.path isnt '/CloudHealthCheck'
+        return res.status(200).end()
+
       return next()
 
-    app.post '/upload', multer(dest: require('os').tmpdir()), (req, res, next) ->
-      librato.logImagesUploaded Object.keys req.files
+## Routes
 
-      async.mapSeries Object.keys(req.files), (key, cb) ->
-        if req.files[key].extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
-          error = new Error "Invalid Image #{req.files[key].extension}"
-          error.status = 422
-          return cb error
+    app.all '/CloudHealthCheck', (req, res, next) ->
+      res.status 200
+      return res.end() if req.method is 'HEAD'
+      return res.json message: 'System OK'
 
-        t1 = new Date().getTime()
-        s3.upload req.files[key].path, {}, (err, images, meta) ->
-          return cb err if err
+    app.use '/', require './routes/api_v1'
+    app.use '/api/v1/', require './routes/api_v1'
 
-          librato.logImageProcessingTime t1, new Date().getTime()
+    app.get '/', (req, res, next) ->
+      res.redirect '/api/v1'
 
-          if meta.exif['exif:GPSLatitude'] and meta.exif['exif:GPSLongitude']
-            meta.geojson =
-              type: 'Point'
-              coordinates: dms2dec \
-                meta.exif['exif:GPSLatitude'], \
-                meta.exif['exif:GPSLatitudeRef'], \
-                meta.exif['exif:GPSLongitude'], \
-                meta.exif['exif:GPSLongitudeRef']
-              .reverse()
-
-          return cb null, versions: images.splice(1), meta: meta
-      , (err, files) ->
-        return next err if err
-        sentry.captureHeaderSent req, files if res._headerSent
-        return res.status(201).json files
+## Not Found
 
     app.use (req, res, next) ->
       res.status(404).json message: 'Not Found'
 
-    app.use raven.middleware.express sentry
-    app.use (err, req, res, next) ->
-      if not err.status or err.status >= 500
-        sentry.captureError err
+### Error Handling
 
+Before handling the error ours self make sure that it is propperly logged in
+Sentry by using the express/connect middleware.
+
+    app.use raven.middleware.express sentry
+
+All errors passed to `next` or exceptions ends up here. We set the status code
+to `500` if it is not already defined in the `Error` object. We then print the
+error mesage and stack trace to the console for debug purposes.
+
+Before returning a response to the user the request method is check. HEAD
+requests shall not contain any body – this applies for errors as well.
+
+    app.use (err, req, res, next) ->
+      res.status err.status or 500
+
+      if res.statusCode >= 500
+        console.error err
         console.error err.message
         console.error err.stack
 
-        res.status(err.status or 500).json message: 'Internal Server Error'
-      else
-        sentry.captureMessage err.message, level: 'warning', req: req
-        res.status(err.status).json message: err.message
+      return res.end() if req.method is 'HEAD'
+      return res.json message: err.message or 'Unknown error'
+
+### Start Server
 
     if not module.parent
       app.listen process.env.PORT_WWW
-      console.log "Server listening on port #{process.env.PORT_WWW}"
-    else
-      module.exports = app
+      console.log "Server is listening on port #{process.env.PORT_WWW}"
 

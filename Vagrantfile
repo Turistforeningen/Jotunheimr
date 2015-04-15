@@ -6,47 +6,51 @@ $script = <<SCRIPT
 
 # Update & Install
 echo 'Updating and installing ubuntu packages...'
+
 apt-get update
 apt-get install -y build-essential python-setuptools git curl imagemagick
+
 easy_install pip && pip install setuptools --no-use-wheel --upgrade && pip install dotcloud
 
-# Read secret environment variables
-AWS_ID=`cat /vagrant/env/AWS_ACCESS_KEY_ID`
-AWS_KEY=`cat /vagrant/env/AWS_SECRET_ACCESS_KEY`
-AWS_NAME=`cat /vagrant/env/AWS_BUCKET_NAME`
-LIBRATO_USER=`cat /vagrant/env/LIBRATO_USER`
-LIBRATO_TOKEN=`cat /vagrant/env/LIBRATO_TOKEN`
+# Reading Environment Varaibles
+echo "Reading environment variables..."
 
-# Vagratnt Environment Varaibles
+# Check if env/ directory exists
+if [ -d /vagrant/env/ ]; then
+  for path in /vagrant/env/*; do
+    name=${path##*/}
+    # Do not include dotfiles or empty directory (*)
+    if [[ "$name" != "*" ]] && [[ ${name:0:1} != "." ]]; then
+      echo "$name=$(cat $path)"
+      echo "export $name=$(cat $path)" >> /home/vagrant/.bashrc
+    fi
+  done
+fi
+
+# Setting Environment Varaibles
 echo "Setting environment variables..."
 
-echo "export NODE_ENV=development"                      >> /home/vagrant/.bashrc
-echo "export PORT_WWW=8080"                             >> /home/vagrant/.bashrc
-echo "export ALLOW_ORIGINS=example.com"                 >> /home/vagrant/.bashrc
-echo "export AWS_ACCESS_KEY_ID=$AWS_ID"                 >> /home/vagrant/.bashrc
-echo "export AWS_SECRET_ACCESS_KEY=$AWS_KEY"            >> /home/vagrant/.bashrc
-echo "export AWS_BUCKET_NAME=$AWS_NAME"                 >> /home/vagrant/.bashrc
-echo "export AWS_BUCKET_PATH=images_test/"              >> /home/vagrant/.bashrc
-echo "export AWS_BUCKET_REGION=eu-west-1"               >> /home/vagrant/.bashrc
-echo "export LIBRATO_USER=$LIBRATO_USER"                >> /home/vagrant/.bashrc
-echo "export LIBRATO_TOKEN=$LIBRATO_TOKEN"              >> /home/vagrant/.bashrc
-echo "export LIBRATO_PREFIX=jotunheimr."                >> /home/vagrant/.bashrc
-echo "\ncd /vagrant"                                    >> /home/vagrant/.bashrc
+echo "export NODE_ENV=development" >> /home/vagrant/.bashrc
+echo "\ncd /vagrant" >> /home/vagrant/.bashrc
 
-# NodeJS via NVM
-echo "Installing NVM..."
+# Installing nvm
+echo "Installing nvm..."
+
 export HOME=/home/vagrant
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | sh
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 echo "source ~/.nvm/nvm.sh" >> /home/vagrant/.bashrc
 source /home/vagrant/.nvm/nvm.sh
-#nvm install 0.8
+
+# Installing Node.JS
+echo "Installing Node.JS..."
+
 nvm install 0.10
-#nvm install 0.11
 chown -R vagrant:vagrant /home/vagrant/.nvm
 export HOME=/home/root
 
-# NPM package install
+# Installing NPM packages
 echo "Installing NPM packages..."
+
 echo "PATH=$PATH:/vagrant/node_modules/.bin" >> /home/vagrant/.bashrc
 PATH=$PATH:/vagrant/node_modules/.bin
 cd /vagrant && rm -rf node_modules
@@ -62,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu/trusty32"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -76,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 8080, host: 4010
+  #config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -106,7 +110,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #vb.gui = true
 
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "384", "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--memory", "512", "--cpus", "2"]
   end
 
   # View the documentation for the provider you're using for more
@@ -176,3 +180,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   chef.validation_client_name = "ORGNAME-validator"
 end
+
