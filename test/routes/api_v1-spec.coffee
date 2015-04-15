@@ -31,7 +31,7 @@ describe '/upload', ->
       .attach 'files[]', resolve __dirname, '../assets/IMG_5299.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.imageSize, { width: 5184, height: 3456 }
+        assert.deepEqual res.body[0].meta.imageSize, { width: 3264, height: 2448 }
         assert.equal res.body[0].versions.length, 3
       .end done
 
