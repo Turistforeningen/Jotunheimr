@@ -1,4 +1,4 @@
-Jötunheimr [![Build Status](https://drone.io/github.com/Turistforeningen/Jotunheimr/status.png)](https://drone.io/github.com/Turistforeningen/Jotunheimr/latest)
+Jötunheimr [![Build status](https://img.shields.io/wercker/ci/552f80a659f9ea486f002130.svg "Build status")](https://app.wercker.com/project/bykey/b8d659a121c19fa628f5e982b3daea04)
 ==========
 
 ![Smørstabbrean by Per Roger Lauritzen](https://raw.githubusercontent.com/Turistforeningen/Jotunheimr/master/images/jotunheimen.png)
