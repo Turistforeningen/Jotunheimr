@@ -55,7 +55,7 @@ npm start
 ```
 curl -X POST \
   -H "Origin: http://example.com" \
-  -F image=/path/to/file.jpg \
+  -F image=@path/to/file.jpg \
   http://localhost:4010/upload
 ```
 
