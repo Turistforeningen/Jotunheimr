@@ -9,12 +9,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "supervisor -w src -- src/server.litcoffee",
-    "build": "coffee --compile --bare --output lib/ src/",
-    "prepublish": "coffee --bare --compile --output lib/ src/",
-    "postpublish": "rm -rf lib/*",
-    "test": "NODE_ENV=test mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
-    "test-drone": "NODE_ENV=test node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
+    "test": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
+    "test-drone": "NODE_ENV=test TMPDIR=/tmp node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
@@ -45,11 +41,11 @@
     "multer": "~0.1",
     "raven": "~0.7",
     "response-time": "~2",
-    "s3-uploader": "~0.8"
+    "s3-uploader": "~0.8",
+    "supervisor": "~0.6"
   },
   "devDependencies": {
     "mocha": "~2",
-    "supertest": "~0.15",
-    "supervisor": "~0.6"
+    "supertest": "~0.15"
   }
 }
