@@ -34,6 +34,21 @@ describe 'CORS', ->
       .expect 403
       .end done
 
+describe 'Not Found', ->
+  it 'should return 404 for non existing endpoint', (done) ->
+    req.get '/does/not/exist'
+      .expect 404
+      .expect (res) ->
+        assert.deepEqual res.body, message: 'Not Found'
+      .end done
+
+  it 'should not return body for HEAD request', (done) ->
+    req.head '/does/not/exist'
+      .expect 404
+      .expect (res) ->
+        assert.deepEqual res.body, {}
+      .end done
+
 describe 'API v1', ->
   require './routes/api_v1-spec'
 
