@@ -60,6 +60,3 @@ curl -X POST \
 ```
 
 ## [MIT lisenced](https://github.com/Turistforeningen/Jotunheimr/blob/master/LICENSE)
-
-
-
