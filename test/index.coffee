@@ -9,7 +9,7 @@ describe '/CloudHealthCheck', ->
       .expect 200
       .end done
 
-  it 'shoudl return 200 for GET request', (done) ->
+  it 'should return 200 for GET request', (done) ->
     req.get '/CloudHealthCheck'
       .expect 200
       .expect (res) ->
@@ -32,6 +32,21 @@ describe 'CORS', ->
     req.options '/'
       .set 'Origin', 'http://example3.com'
       .expect 403
+      .end done
+
+describe 'Not Found', ->
+  it 'should return 404 for non existing endpoint', (done) ->
+    req.get '/does/not/exist'
+      .expect 404
+      .expect (res) ->
+        assert.deepEqual res.body, message: 'Not Found'
+      .end done
+
+  it 'should not return body for HEAD request', (done) ->
+    req.head '/does/not/exist'
+      .expect 404
+      .expect (res) ->
+        assert.deepEqual res.body, {}
       .end done
 
 describe 'API v1', ->
