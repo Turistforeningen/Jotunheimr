@@ -9,7 +9,7 @@ describe '/CloudHealthCheck', ->
       .expect 200
       .end done
 
-  it 'shoudl return 200 for GET request', (done) ->
+  it 'should return 200 for GET request', (done) ->
     req.get '/CloudHealthCheck'
       .expect 200
       .expect (res) ->
