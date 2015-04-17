@@ -1,11 +1,11 @@
     express = require 'express'
-    Upload  = require 's3-uploader'
     multer  = require 'multer'
     async   = require 'async'
     dms2dec = require 'dms2dec'
 
     sentry  = require '../sentry'
     librato = require '../librato'
+    s3      = require '../upload'
 
 Make a new Express router object for this part of the application.
 
@@ -34,36 +34,6 @@ before the request succeeded (`close`).
       res.status(204).end()
 
 ## POST /upload
-
-Configure [s3-uploader](https://github.com/Turistforeningen/node-s3-uploader) to
-store three versions of the image `320px`, `780px`, and `1040px`. The original
-image is also uploaded but not publicly avaiable.
-
-    s3 = new Upload process.env.AWS_BUCKET_NAME,
-      aws:
-        region: process.env.AWS_BUCKET_REGION
-        path: process.env.AWS_BUCKET_PATH
-        acl: 'public-read'
-        httpOptions: timeout: 60000
-      returnExif: true
-
-      versions: [
-        original: true
-        awsImageAcl: 'private'
-      ,
-        suffix: '-large'
-        quality: 80
-        maxHeight: 1040
-        maxWidth: 1040
-      ,
-        suffix: '-medium'
-        maxHeight: 780
-        maxWidth: 780
-      ,
-        suffix: '-small'
-        maxHeight: 320
-        maxWidth: 320
-      ]
 
 Configure [multer](https://github.com/expressjs/multer) to store files in the
 OS's temorary directory `tempdir()`. This way we should not need to clean up the
