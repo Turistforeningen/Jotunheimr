@@ -18,3 +18,24 @@ build:
         - wantedly/pretty-slack-notify:
                 webhook_url: $SLACK_WEBHOOK_URL
 
+deploy:
+    steps:
+        - add-to-known_hosts:
+                hostname: $SSH_HOST
+        - mktemp:
+                envvar: PRIVATEKEY_PATH
+        - create-file:
+                name: write key
+                filename: $PRIVATEKEY_PATH
+                content: $SSH_KEY_PRIVATE
+                overwrite: true
+                hide-from-log: true
+        - script:
+                name: start application
+                code: |
+                    ssh -i ${PRIVATEKEY_PATH} \
+                        -o UserKnownHostsFile=/dev/null \
+                        -o StrictHostKeyChecking=no \
+                        -l ${SSH_USER} \
+                        ${SSH_HOST} \
+                        /var/www/config/manage.sh ${SSH_APP} update
