@@ -14,10 +14,6 @@ build:
                     echo "node version $(node -v) running"
                     echo "npm version $(npm -v) running"
 
-    after-steps:
-        - wantedly/pretty-slack-notify:
-                webhook_url: $SLACK_WEBHOOK_URL
-
 deploy:
     steps:
         - add-to-known_hosts:
@@ -39,3 +35,7 @@ deploy:
                         -l ${SSH_USER} \
                         ${SSH_HOST} \
                         /var/www/config/manage.sh ${SSH_APP} update
+
+    after-steps:
+        - wantedly/pretty-slack-notify:
+                webhook_url: $SLACK_WEBHOOK_URL
