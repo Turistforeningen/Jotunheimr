@@ -11,7 +11,6 @@ store the following versions:
 | `-260`    | `260`      | `260`     | `3:2`        |
 | `-150`    | `150`      | `150`     | `3:2`        |
 | `-thumb1` | `250`      | `250`     | `1:1`        |
-| `-thumb2` | `150`      | `150`     | `1:1`        |
 
     module.exports = new Upload process.env.AWS_BUCKET_NAME,
       aws:
