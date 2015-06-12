@@ -38,7 +38,7 @@ deploy:
                         -o StrictHostKeyChecking=no \
                         -l ${SSH_USER} \
                         ${SSH_HOST} \
-                        /var/www/config/manage.sh ${SSH_APP} update
+                        COMPOSE_FILE=docker-paas.yml /var/www/config/manage.sh ${SSH_APP} update
 
     after-steps:
         - turistforeningen/slack-notifier:

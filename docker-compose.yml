@@ -1,20 +1,14 @@
-www:
-  build: .
+dev:
+  image: starefossen/iojs-imagemagick:1-6
+  working_dir: /usr/src/app
   volumes:
-    - "src:/usr/src/app/src"
-    - "test:/usr/src/app/test"
+    - ".:/usr/src/app"
+  command: npm run dev
   ports:
     - "8080"
+  env_file: .env
   environment:
-    - NODE_ENV
-    - ALLOW_ORIGINS
-    - AWS_ACCESS_KEY_ID
-    - AWS_BUCKET_NAME
-    - AWS_BUCKET_PATH
-    - AWS_BUCKET_REGION
-    - AWS_SECRET_ACCESS_KEY
-    - LIBRATO_PREFIX
-    - LIBRATO_TOKEN
-    - LIBRATO_USER
-    - SENTRY_DNS
-  restart: always
+    - NODE_ENV=development
+    - ALLOW_ORIGINS=example1.com,example2.com
+    - VIRTUAL_HOST=proxy.turbasen.privat
+    - VIRTUAL_PORT=8080

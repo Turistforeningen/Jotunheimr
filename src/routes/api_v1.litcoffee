@@ -74,20 +74,20 @@ Configure the `/upload` route handler.
                 meta.exif['exif:GPSLongitudeRef']
               .reverse()
 
-          if meta.imageSize.height > meta.imageSize.width
-            ratio = meta.imageSize.height / meta.imageSize.width
-            edge = 'width'
-          else
-            ratio = meta.imageSize.width / meta.imageSize.height
-            edge = 'height'
+          #if meta.imageSize.height > meta.imageSize.width
+          #  ratio = meta.imageSize.height / meta.imageSize.width
+          #  edge = 'width'
+          #else
+          #  ratio = meta.imageSize.width / meta.imageSize.height
+          #  edge = 'height'
 
           for image in images
-            image[edge] = Math.floor(image[edge] / ratio)
+            #image[edge] = Math.floor(image[edge] / ratio)
 
             image.path = undefined
             image.src = undefined
 
-          return cb null, versions: images.splice(1), meta: meta
+          return cb null, versions: images.splice(0, images.length - 1), meta: meta
       , (err, files) ->
         return next err if err
         sentry.captureHeaderSent req, files if res._headerSent

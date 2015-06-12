@@ -10,9 +10,10 @@
   },
   "scripts": {
     "start": "TMPDIR=/tmp ./node_modules/.bin/supervisor lib/server.js",
+    "dev": "TMPDIR=/tmp ./node_modules/.bin/supervisor src/server.litcoffee",
     "build": "./node_modules/.bin/coffee --bare --compile --output lib/ src/",
-    "test": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
-    "test-drone": "NODE_ENV=test TMPDIR=/tmp node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
+    "test": "NODE_ENV=test TMPDIR=/tmp node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
+    "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
@@ -33,9 +34,9 @@
   },
   "homepage": "https://github.com/Turistforeningen/Jotunheimr",
   "dependencies": {
-    "async": "~0.9",
+    "async": "~1.2",
     "coffee-script": "~1",
-    "compression": "~1.4",
+    "compression": "~1.5",
     "dms2dec": "~1.0",
     "express": "~4",
     "librato": "~0.1",
@@ -43,11 +44,11 @@
     "multer": "~0.1",
     "raven": "~0.7",
     "response-time": "~2",
-    "s3-uploader": "~0.8",
+    "s3-uploader": "1.0.0-rc.2",
     "supervisor": "~0.6"
   },
   "devDependencies": {
     "mocha": "~2",
-    "supertest": "~0.15"
+    "supertest": "~1"
   }
 }
