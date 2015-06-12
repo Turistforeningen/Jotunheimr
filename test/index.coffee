@@ -46,7 +46,7 @@ describe 'Not Found', ->
     req.head '/does/not/exist'
       .expect 404
       .expect (res) ->
-        assert.deepEqual res.body, {}
+        assert.deepEqual res.body, ''
       .end done
 
 describe 'API v1', ->

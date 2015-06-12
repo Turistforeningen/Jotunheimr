@@ -21,8 +21,9 @@ describe '/upload', ->
       .attach 'files[]', resolve __dirname, '../assets/IMG_5836.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.imageSize, { width: 5184, height: 3456 }
-        assert.equal res.body[0].versions.length, 3
+        assert.deepEqual res.body[0].meta.height, 3456
+        assert.deepEqual res.body[0].meta.width, 5184
+        assert.equal res.body[0].versions.length, 6
       .end done
 
   it 'should upload single horizontal image to s3', (done) ->
@@ -31,7 +32,8 @@ describe '/upload', ->
       .attach 'files[]', resolve __dirname, '../assets/IMG_5299.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.imageSize, { width: 3264, height: 2448 }
-        assert.equal res.body[0].versions.length, 3
+        assert.deepEqual res.body[0].meta.height, 2448
+        assert.deepEqual res.body[0].meta.width, 3264
+        assert.equal res.body[0].versions.length, 6
       .end done
 
