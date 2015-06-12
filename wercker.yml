@@ -16,20 +16,17 @@ build:
 
 deploy:
     steps:
+        - add-ssh-key:
+                keyname: SSH_KEY
+                host: $SSH_HOST
+
         - add-to-known_hosts:
                 hostname: $SSH_HOST
-        - mktemp:
-                envvar: PRIVATEKEY_PATH
-        - create-file:
-                name: write key
-                filename: $PRIVATEKEY_PATH
-                content: $SSH_KEY_PRIVATE
-                overwrite: true
-                hide-from-log: true
+
         - script:
                 name: start application
-                code: |-
-                    ssh -i ${PRIVATEKEY_PATH} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -l ${SSH_USER} ${SSH_HOST} COMPOSE_FILE=docker-paas.yml /var/www/config/manage.sh ${SSH_APP} update --rebuild
+                code: |
+                    ssh -l ${SSH_USER} ${SSH_HOST} COMPOSE_FILE=docker-paas.yml /var/www/config/manage.sh ${SSH_APP} update --rebuild
 
     after-steps:
         - turistforeningen/slack-notifier:
