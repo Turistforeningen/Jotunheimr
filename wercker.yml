@@ -28,7 +28,7 @@ deploy:
                 hide-from-log: true
         - script:
                 name: start application
-                code: |
+                code: |-
                     ssh -i ${PRIVATEKEY_PATH} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -l ${SSH_USER} ${SSH_HOST} COMPOSE_FILE=docker-paas.yml /var/www/config/manage.sh ${SSH_APP} update --rebuild
 
     after-steps:
