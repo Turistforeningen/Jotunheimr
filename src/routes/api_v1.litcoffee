@@ -64,14 +64,14 @@ Configure the `/upload` route handler.
 
           librato.logImageProcessingTime t1, new Date().getTime()
 
-          if meta.exif['exif:GPSLatitude'] and meta.exif['exif:GPSLongitude']
+          if meta.exif?.GPSLatitude and meta.exif?.GPSLongitude
             meta.geojson =
               type: 'Point'
               coordinates: dms2dec \
-                meta.exif['exif:GPSLatitude'], \
-                meta.exif['exif:GPSLatitudeRef'], \
-                meta.exif['exif:GPSLongitude'], \
-                meta.exif['exif:GPSLongitudeRef']
+                meta.exif.GPSLatitude, \
+                meta.exif.GPSLatitudeRef, \
+                meta.exif.GPSLongitude, \
+                meta.exif.GPSLongitudeRef
               .reverse()
 
           #if meta.imageSize.height > meta.imageSize.width
