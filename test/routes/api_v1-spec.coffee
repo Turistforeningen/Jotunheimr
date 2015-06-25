@@ -15,25 +15,25 @@ describe '/', ->
 describe '/upload', ->
   url = "#{base}/upload"
 
-  it 'should upload single landscape image to s3', (done) ->
-    @timeout 30000
-    req.post url
-      .attach 'files[]', resolve __dirname, '../assets/IMG_5836.jpg'
-      .expect 201
-      .expect (res) ->
-        assert.deepEqual res.body[0].meta.height, 3456
-        assert.deepEqual res.body[0].meta.width, 5184
-        assert.equal res.body[0].versions.length, 6
-      .end done
-
   it 'should upload single horizontal image to s3', (done) ->
     @timeout 30000
     req.post url
-      .attach 'files[]', resolve __dirname, '../assets/IMG_5299.jpg'
+      .attach 'files[]', resolve __dirname, '../assets/horizontal.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.height, 2448
-        assert.deepEqual res.body[0].meta.width, 3264
-        assert.equal res.body[0].versions.length, 6
+        assert.deepEqual res.body[0].meta.height, 2623
+        assert.deepEqual res.body[0].meta.width, 5184
+        assert.equal res.body[0].versions.length, 5
+      .end done
+
+  it 'should upload single vertical image to s3', (done) ->
+    @timeout 30000
+    req.post url
+      .attach 'files[]', resolve __dirname, '../assets/vertical.jpg'
+      .expect 201
+      .expect (res) ->
+        assert.deepEqual res.body[0].meta.height, 3456
+        assert.deepEqual res.body[0].meta.width, 1929
+        assert.equal res.body[0].versions.length, 5
       .end done
 
