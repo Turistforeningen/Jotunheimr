@@ -34,11 +34,6 @@ store the following versions:
         maxHeight: 1200
         maxWidth: 1200
       ,
-        suffix: '-thumb'
-        maxHeight: 250
-        maxWidth: 250
-        aspect: '1:1'
-      ,
         suffix: '-800'
         maxHeight: 800
         maxWidth: 800
