@@ -44,7 +44,7 @@
     "multer": "~0.1",
     "raven": "~0.7",
     "response-time": "~2",
-    "s3-uploader": "1.0.0-rc.3",
+    "s3-uploader": "1.0.0-rc.4",
     "supervisor": "~0.6"
   },
   "devDependencies": {

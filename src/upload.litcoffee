@@ -42,20 +42,20 @@ store the following versions:
         suffix: '-800'
         maxHeight: 800
         maxWidth: 800
-        aspect: '3:2'
+        aspect: '3:2!h'
       ,
         suffix: '-500'
         maxHeight: 500
         maxWidth: 500
-        aspect: '3:2'
+        aspect: '3:2!h'
       ,
         suffix: '-260'
         maxHeight: 260
         maxWidth: 260
-        aspect: '3:2'
+        aspect: '3:2!h'
       ,
         suffix: '-150'
         maxHeight: 150
         maxWidth: 150
-        aspect: '3:2'
+        aspect: '3:2!h'
       ]
