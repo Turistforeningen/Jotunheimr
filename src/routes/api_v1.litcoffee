@@ -64,6 +64,8 @@ Configure the `/upload` route handler.
 
           librato.logImageProcessingTime t1, new Date().getTime()
 
+Format image GeoJSON correctly if the image has GPS properties.
+
           if meta.exif?.GPSLatitude and meta.exif?.GPSLongitude
             meta.geojson =
               type: 'Point'
@@ -74,17 +76,14 @@ Configure the `/upload` route handler.
                 meta.exif.GPSLongitudeRef
               .reverse()
 
-          #if meta.imageSize.height > meta.imageSize.width
-          #  ratio = meta.imageSize.height / meta.imageSize.width
-          #  edge = 'width'
-          #else
-          #  ratio = meta.imageSize.width / meta.imageSize.height
-          #  edge = 'height'
+We need to remove the original image (index i - 1) since it is not publicly
+accessible. It gets uploaded to AWS as backup of the original image.
 
           images = images.splice 0, images.length - 1
 
-            image.path = undefined
-            image.src = undefined
+Loop over all the generated images and apply `width` and `height` properties
+since that is currently not set correctly. We also remove some image information
+such as AWS key and local path which are not in use.
 
           for image in images
             # Since we
