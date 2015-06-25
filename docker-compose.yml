@@ -3,7 +3,7 @@ dev:
   working_dir: /usr/src/app
   volumes:
     - ".:/usr/src/app"
-  command: npm run dev
+  command: npm run watch
   ports:
     - "8080"
   env_file: .env
