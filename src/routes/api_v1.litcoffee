@@ -105,8 +105,6 @@ such as AWS key and local path which are not in use.
             image.path      = undefined
             image.suffix    = undefined
 
-            console.log image
-
           return cb null, versions: images, meta: meta
       , (err, files) ->
         return next err if err
