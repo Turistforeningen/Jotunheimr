@@ -81,13 +81,34 @@ Configure the `/upload` route handler.
           #  ratio = meta.imageSize.width / meta.imageSize.height
           #  edge = 'height'
 
-          for image in images
-            #image[edge] = Math.floor(image[edge] / ratio)
+          images = images.splice 0, images.length - 1
 
             image.path = undefined
             image.src = undefined
 
-          return cb null, versions: images.splice(0, images.length - 1), meta: meta
+          for image in images
+            # Since we
+            if not image.width
+              image.height = image.maxHeight
+              image.width = image.maxWidth
+
+              if image.aspect
+                image.height = Math.floor image.maxHeight * 2 / 3
+              else
+                if meta.height > meta.width
+                  image.width = Math.floor image.height * meta.width / meta.height
+                else
+                  image.height = Math.floor image.width * meta.height / meta.width
+
+            image.key       = undefined
+            image.maxHeight = undefined
+            image.maxWidth  = undefined
+            image.path      = undefined
+            image.suffix    = undefined
+
+            console.log image
+
+          return cb null, versions: images, meta: meta
       , (err, files) ->
         return next err if err
         sentry.captureHeaderSent req, files if res._headerSent
