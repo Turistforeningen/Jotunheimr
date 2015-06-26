@@ -112,4 +112,3 @@ such as AWS key and local path which are not in use.
         return res.status(201).json files
 
     module.exports = api
-

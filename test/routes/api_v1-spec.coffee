@@ -36,4 +36,3 @@ describe '/upload', ->
         assert.deepEqual res.body[0].meta.width, 1929
         assert.equal res.body[0].versions.length, 5
       .end done
-
