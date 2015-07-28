@@ -1,6 +1,6 @@
 {
   "name": "jotunheimr",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Microservice for processing images and uploading them to a designated bucket on AWS S3",
   "main": "lib/index.js",
   "directories": {
