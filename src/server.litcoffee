@@ -100,12 +100,16 @@ Before returning a response to the user the request method is check. HEAD
 requests shall not contain any body – this applies for errors as well.
 
     app.use (err, req, res, next) ->
-      res.status err.status or 500
+      if err.code is 'LIMIT_UNEXPECTED_FILE'
+        err.message = "Unknown form field \"#{err.field}\""
+        err.statusCode = 400
 
-      if res.statusCode >= 500
+      if not err.statusCode or err.statusCode >= 500
         console.error err
         console.error err.message
         console.error err.stack
+
+      res.status err.statusCode or 500
 
       return res.end() if req.method is 'HEAD'
       return res.json message: err.message or 'Unknown error'

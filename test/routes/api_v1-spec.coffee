@@ -15,6 +15,17 @@ describe '/', ->
 describe '/upload', ->
   url = "#{base}/upload"
 
+  it 'returns 400 for invalid form filed', (done) ->
+    req.post url
+      .attach 'some_field', resolve __dirname, '../assets/invalid.image'
+      .expect 400
+      .expect message: 'Unknown form field "some_field"', done
+
+  it 'returns 422 for invalid image type', (done) ->
+    req.post url
+      .attach 'image', resolve __dirname, '../assets/invalid.image'
+      .expect 422, done
+
   it 'should upload single horizontal image to s3', (done) ->
     @timeout 30000
     req.post url
