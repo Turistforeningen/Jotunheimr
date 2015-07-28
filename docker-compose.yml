@@ -3,12 +3,12 @@ dev:
   working_dir: /usr/src/app
   volumes:
     - ".:/usr/src/app"
-  command: npm run watch
+  command: npm run dev
   ports:
     - "8080"
   env_file: .env
   environment:
     - NODE_ENV=development
-    - ALLOW_ORIGINS=example1.com,example2.com
-    - VIRTUAL_HOST=proxy.turbasen.privat
+    - ALLOW_ORIGINS=tur.app.dnt.privat,example1.com,example2.com
+    - VIRTUAL_HOST=bilde.app.dnt.privat
     - VIRTUAL_PORT=8080
