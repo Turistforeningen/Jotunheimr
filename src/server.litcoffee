@@ -47,7 +47,7 @@ Check if the request Origin is on in the `ALLOW_ORIGINS` list. If not return a
 
         if origin.hostname not in origins
           error = new Error "Bad Origin Header #{req.get('Origin')}"
-          error.status = 403
+          error.statusCode = 403
           return next error
 
 Set the correct CORS headers.
