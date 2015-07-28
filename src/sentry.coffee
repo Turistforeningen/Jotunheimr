@@ -18,4 +18,3 @@ if process.env.SENTRY_DNS
     console.error err.message
     console.error err.stack
     process.exit 1
-

@@ -16,4 +16,3 @@ module.exports.logImageUpload = ->
 
 module.exports.logImageProcessingTime = (t1, t2) ->
   module.exports.measure 'image.processing', (t2 - t1), {}
-

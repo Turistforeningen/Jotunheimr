@@ -119,4 +119,3 @@ requests shall not contain any body – this applies for errors as well.
     if not module.parent
       app.listen process.env.PORT_WWW
       console.log "Server is listening on port #{process.env.PORT_WWW}"
-
