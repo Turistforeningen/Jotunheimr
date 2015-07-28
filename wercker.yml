@@ -1,4 +1,4 @@
-box: starefossen/iojs-imagemagick
+box: starefossen/iojs-imagemagick:2-6
 build:
     steps:
         - npm-install

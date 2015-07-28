@@ -1,4 +1,4 @@
-FROM starefossen/iojs-imagemagick:1-6
+FROM starefossen/iojs-imagemagick:2-6
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
