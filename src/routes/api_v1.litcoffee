@@ -1,6 +1,5 @@
     express = require 'express'
     multer  = require 'multer'
-    async   = require 'async'
     dms2dec = require 'dms2dec'
 
     sentry  = require '../sentry'
