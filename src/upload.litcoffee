@@ -3,10 +3,9 @@
 Configure [s3-uploader](https://github.com/Turistforeningen/node-s3-uploader) to
 store the following versions:
 
-| Suffix    | Max Height | Max Width | Aspect Ratio |
+| Suffix    | Max Height | Max Width | Aspect Ratio |
 |-----------|------------|-----------|--------------|
 | `-full`   | `1200`     | `1200`    |              |
-| `-thumb`  | `250`      | `250`     | `1:1`        |
 | `-800`    | `800`      | `800`     | `3:2`        |
 | `-500`    | `500`      | `500`     | `3:2`        |
 | `-260`    | `260`      | `260`     | `3:2`        |
