@@ -9,10 +9,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp ./node_modules/.bin/supervisor lib/server.js",
-    "dev": "TMPDIR=/tmp ./node_modules/.bin/supervisor src/server.litcoffee",
-    "build": "./node_modules/.bin/coffee --bare --compile --output lib/ src/",
-    "test": "NODE_ENV=test TMPDIR=/tmp node_modules/.bin/mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
+    "start": "TMPDIR=/tmp supervisor lib/server.js",
+    "dev": "TMPDIR=/tmp supervisor src/server.litcoffee",
+    "build": "coffee --bare --compile --output lib/ src/",
+    "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
     "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
   },
   "repository": {
