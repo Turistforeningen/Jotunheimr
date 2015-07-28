@@ -39,76 +39,59 @@ Configure [multer](https://github.com/expressjs/multer) to store files in the
 OS's temorary directory `tempdir()`. This way we should not need to clean up the
 uploaded files since that should be the job of the OS.
 
+    uuid = require('uuid')
+    extname = require('path').extname
     multer = require('multer')
-      putSingleFilesInArray: true
-      dest: require('os').tmpdir()
+      storage: require('multer').diskStorage
+        destination: require('os').tmpdir()
+        filename: (req, file, cb) ->
+          cb null, uuid.v4() + '.' + extname(file.originalname).substr(1).toLowerCase()
 
 Configure the `/upload` route handler.
 
-    api.post '/upload', multer, (req, res, next) ->
-      librato.logImagesUploaded Object.keys req.files
+    api.post '/upload', multer.single('image'), (req, res, next) ->
+      librato.logImageUpload()
 
-      files = []
-      for key, f of req.files
-        files.push file for file in f
+      if not /(jpe?g|png|gif)$/i.test req.file.originalname
+        error = new Error "Invalid Image #{req.file.originalname}"
+        error.statusCode = 422
+        return next error
 
-      async.mapSeries files, (file, cb) ->
-        if file.extension.toLowerCase() not in ['jpg', 'jpeg', 'png', 'gif']
-          error = new Error "Invalid Image #{file.extension}"
-          error.status = 422
-          return cb error
+      t1 = new Date().getTime()
+      s3.upload req.file.path, {}, (error, images, meta) ->
+        return next error if error
 
-        t1 = new Date().getTime()
-        s3.upload file.path, {}, (err, images, meta) ->
-          return cb err if err
-
-          librato.logImageProcessingTime t1, new Date().getTime()
+        librato.logImageProcessingTime t1, new Date().getTime()
 
 Format image GeoJSON correctly if the image has GPS properties.
 
-          if meta.exif?.GPSLatitude and meta.exif?.GPSLongitude
-            meta.geojson =
-              type: 'Point'
-              coordinates: dms2dec \
-                meta.exif.GPSLatitude, \
-                meta.exif.GPSLatitudeRef, \
-                meta.exif.GPSLongitude, \
-                meta.exif.GPSLongitudeRef
-              .reverse()
+        if meta.exif?.GPSLatitude and meta.exif?.GPSLongitude
+          meta.geojson =
+            type: 'Point'
+            coordinates: dms2dec \
+              meta.exif.GPSLatitude, \
+              meta.exif.GPSLatitudeRef, \
+              meta.exif.GPSLongitude, \
+              meta.exif.GPSLongitudeRef
+            .reverse()
 
 We need to remove the original image (index i - 1) since it is not publicly
 accessible. It gets uploaded to AWS as backup of the original image.
 
-          images = images.splice 0, images.length - 1
+        images = images.splice 0, images.length - 1
 
-Loop over all the generated images and apply `width` and `height` properties
-since that is currently not set correctly. We also remove some image information
-such as AWS key and local path which are not in use.
+        for image in images
+          image.aspect      = undefined
+          image.awsImageAcl = undefined
+          image.key         = undefined
+          image.maxHeight   = undefined
+          image.maxWidth    = undefined
+          image.path        = undefined
+          image.suffix      = undefined
 
-          for image in images
-            # Since we
-            if not image.width
-              image.height = image.maxHeight
-              image.width = image.maxWidth
+        sentry.captureHeaderSent req, images if res._headerSent
 
-              if image.aspect
-                image.height = Math.floor image.maxHeight * 2 / 3
-              else
-                if meta.height > meta.width
-                  image.width = Math.floor image.height * meta.width / meta.height
-                else
-                  image.height = Math.floor image.width * meta.height / meta.width
-
-            image.key       = undefined
-            image.maxHeight = undefined
-            image.maxWidth  = undefined
-            image.path      = undefined
-            image.suffix    = undefined
-
-          return cb null, versions: images, meta: meta
-      , (err, files) ->
-        return next err if err
-        sentry.captureHeaderSent req, files if res._headerSent
-        return res.status(201).json files
+        res.status 201
+        res.json meta: meta, versions: images
 
     module.exports = api

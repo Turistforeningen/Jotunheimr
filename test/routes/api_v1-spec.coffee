@@ -18,21 +18,21 @@ describe '/upload', ->
   it 'should upload single horizontal image to s3', (done) ->
     @timeout 30000
     req.post url
-      .attach 'files[]', resolve __dirname, '../assets/horizontal.jpg'
+      .attach 'image', resolve __dirname, '../assets/horizontal.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.height, 2623
-        assert.deepEqual res.body[0].meta.width, 5184
-        assert.equal res.body[0].versions.length, 5
+        assert.deepEqual res.body.meta.height, 2623
+        assert.deepEqual res.body.meta.width, 5184
+        assert.equal res.body.versions.length, 5
       .end done
 
   it 'should upload single vertical image to s3', (done) ->
     @timeout 30000
     req.post url
-      .attach 'files[]', resolve __dirname, '../assets/vertical.jpg'
+      .attach 'image', resolve __dirname, '../assets/vertical.jpg'
       .expect 201
       .expect (res) ->
-        assert.deepEqual res.body[0].meta.height, 3456
-        assert.deepEqual res.body[0].meta.width, 1929
-        assert.equal res.body[0].versions.length, 5
+        assert.deepEqual res.body.meta.height, 3456
+        assert.deepEqual res.body.meta.width, 1929
+        assert.equal res.body.versions.length, 5
       .end done

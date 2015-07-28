@@ -11,8 +11,8 @@ module.exports.logRequest = (method) ->
 module.exports.logResponse = (status) ->
   module.exports.measure 'http.response', 1, source: '' + status
 
-module.exports.logImagesUploaded = (images) ->
-  module.exports.measure 'image.upload', images.length, {}
+module.exports.logImageUpload = ->
+  module.exports.measure 'image.upload', 1, {}
 
 module.exports.logImageProcessingTime = (t1, t2) ->
   module.exports.measure 'image.processing', (t2 - t1), {}
