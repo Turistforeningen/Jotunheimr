@@ -43,7 +43,7 @@
     "multer": "~1.0",
     "raven": "~0.8",
     "response-time": "~2.3",
-    "s3-uploader": "1.0.0-rc.11",
+    "s3-uploader": "~1.0",
     "supervisor": "~0.7",
     "uuid": "~2.0"
   },
