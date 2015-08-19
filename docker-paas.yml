@@ -3,14 +3,14 @@ www:
   ports:
     - "8080"
   environment:
-    - NODE_ENV
+    - NODE_ENV=production
     - ALLOW_ORIGINS
     - AWS_ACCESS_KEY_ID
     - AWS_BUCKET_NAME
     - AWS_BUCKET_PATH
     - AWS_BUCKET_REGION
     - AWS_SECRET_ACCESS_KEY
-    - LIBRATO_PREFIX
+    - LIBRATO_PREFIX=jotunheimr.
     - LIBRATO_TOKEN
     - LIBRATO_USER
     - SENTRY_DNS
