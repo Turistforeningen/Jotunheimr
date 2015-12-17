@@ -1,9 +1,8 @@
 dev:
-  image: starefossen/node-imagemagick:4-6
+  image: starefossen/node-imagemagick:latest
   working_dir: /usr/src/app
   volumes:
     - ".:/usr/src/app"
-  command: npm run dev
   ports:
     - "8080"
   env_file: .env
@@ -12,3 +11,4 @@ dev:
     - ALLOW_ORIGINS=tur.app.dnt.privat,example1.com,example2.com
     - VIRTUAL_HOST=bilde.app.dnt.privat
     - VIRTUAL_PORT=8080
+  command: npm start

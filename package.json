@@ -9,8 +9,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp supervisor lib/server.js",
-    "dev": "TMPDIR=/tmp supervisor src/server.litcoffee",
+    "start": "TMPDIR=/tmp supervisor src/server.litcoffee",
     "build": "coffee --bare --compile --output lib/ src/",
     "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
     "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
@@ -44,11 +43,11 @@
     "raven": "^0.9.0",
     "response-time": "^2.3.0",
     "s3-uploader": "^1.1.0",
-    "supervisor": "^0.9.1",
     "uuid": "^2.0.1"
   },
   "devDependencies": {
     "mocha": "^2.3.4",
-    "supertest": "^1.1.0"
+    "supertest": "^1.1.0",
+    "supervisor": "^0.9.1"
   }
 }
