@@ -9,10 +9,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp supervisor src/server.litcoffee",
-    "build": "coffee --bare --compile --output lib/ src/",
-    "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test/index.coffee -R spec --compilers coffee:coffee-script/register,litcoffee:coffee-script/register",
-    "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test/index.coffee -R progress --compilers coffee:coffee-script/register,litcoffee:coffee-script/register"
+    "start": "TMPDIR=/tmp supervisor index.js",
+    "build": "coffee --bare --compile --output lib222/ test/",
+    "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test",
+    "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/Turistforeningen/Jotunheimr",
   "dependencies": {
-    "coffee-script": "^1.10.0",
     "compression": "^1.6.0",
     "dms2dec": "^1.1.0",
     "express": "^4.13.3",
