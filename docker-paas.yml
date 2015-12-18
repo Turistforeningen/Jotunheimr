@@ -3,7 +3,6 @@ www:
   ports:
     - "8080"
   environment:
-    - NODE_ENV=production
     - ALLOW_ORIGINS
     - AWS_ACCESS_KEY_ID
     - AWS_BUCKET_NAME
@@ -13,5 +12,10 @@ www:
     - LIBRATO_PREFIX=jotunheimr.
     - LIBRATO_TOKEN
     - LIBRATO_USER
+    - NEW_RELIC_APP_NAME=Jotunheimr
+    - NEW_RELIC_LICENSE_KEY
+    - NEW_RELIC_LOG=stdout
+    - NEW_RELIC_NO_CONFIG_FILE=true
+    - NODE_ENV=production
     - SENTRY_DNS
   restart: always
