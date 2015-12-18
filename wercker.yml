@@ -11,31 +11,31 @@ build:
         - npm-test
 
         - script:
-                name: echo nodejs information
-                code: |
-                    echo "node version $(node -v) running"
-                    echo "npm version $(npm -v) running"
+            name: echo nodejs information
+            code: |
+                echo "node version $(node -v) running"
+                echo "npm version $(npm -v) running"
 
     after-steps:
         - turistforeningen/slack-notifier:
-                url: $SLACK_WEBHOOK_URL
+             url: $SLACK_WEBHOOK_URL
 
 deploy:
     steps:
         - add-ssh-key:
-                keyname: SSH_KEY
-                host: $SSH_HOST
+            keyname: SSH_KEY
+            host: $SSH_HOST
 
         - add-to-known_hosts:
-                hostname: $SSH_HOST
+            hostname: $SSH_HOST
 
         - script:
-                name: start application
-                code: >
-                    ssh -l ${SSH_USER} ${SSH_HOST}
-                    COMPOSE_FILE=docker-paas.yml
-                    /var/www/config/manage.sh ${SSH_APP} update --rebuild
+            name: start application
+            code: >
+                ssh -l ${SSH_USER} ${SSH_HOST}
+                COMPOSE_FILE=docker-paas.yml
+                /var/www/config/manage.sh ${SSH_APP} update --rebuild
 
     after-steps:
         - turistforeningen/slack-notifier:
-                url: $SLACK_WEBHOOK_URL
+            url: $SLACK_WEBHOOK_URL
