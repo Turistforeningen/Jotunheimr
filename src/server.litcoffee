@@ -1,3 +1,5 @@
+    require 'newrelic' if process.env.NODE_ENV is 'production'
+
     express       = require 'express'
     logger        = require 'morgan'
     url           = require 'url'
