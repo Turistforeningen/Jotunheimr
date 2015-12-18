@@ -3,6 +3,11 @@ box: starefossen/node-imagemagick:4-6
 build:
     steps:
         - npm-install
+
+        - script:
+            name: lint
+            code: npm run lint
+
         - npm-test
 
         - script:

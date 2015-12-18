@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "TMPDIR=/tmp supervisor index.js",
-    "build": "coffee --bare --compile --output lib222/ test/",
+    "lint": "eslint index.js lib test routes",
     "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test",
     "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
   },
@@ -47,6 +47,8 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
     "mocha": "^2.3.4",
     "supertest": "^1.1.0",
     "supervisor": "^0.9.1"
