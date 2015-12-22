@@ -7,6 +7,5 @@ COPY package.json /usr/src/app/package.json
 RUN npm install --production
 
 COPY . /usr/src/app
-RUN npm run build
 
 CMD [ "node", "lib/server.js" ]
