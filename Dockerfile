@@ -8,4 +8,4 @@ RUN npm install --production
 
 COPY . /usr/src/app
 
-CMD [ "node", "lib/server.js" ]
+CMD [ "node", "index.js" ]
