@@ -1,6 +1,11 @@
 /* eslint no-unused-vars: 0, no-console: 0 */
 'use strict';
 
+if (process.env.NODE_ENV === 'production') {
+  console.log('Starting newrelic application monitoring');
+  require('newrelic');
+}
+
 const express = require('express');
 const compression = require('compression');
 const responseTime = require('response-time');
