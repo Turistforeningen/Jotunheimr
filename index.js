@@ -2,8 +2,10 @@
 'use strict';
 
 if (process.env.NODE_ENV === 'production') {
+  /* eslint-disable no-console */
   console.log('Starting newrelic application monitoring');
-  require('newrelic');
+  /* eslint-enable */
+  require('newrelic'); // eslint-disable-line global-require
 }
 
 const express = require('express');
