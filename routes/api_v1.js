@@ -70,7 +70,6 @@ api.post('/upload', multer.single('image'), (req, res, next) => {
     const images = versions.splice(0, versions.length - 1);
 
     for (const image of images) {
-      image.aspect = undefined;
       image.awsImageAcl = undefined;
       image.key = undefined;
       image.maxHeight = undefined;
