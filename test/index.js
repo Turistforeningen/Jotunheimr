@@ -67,5 +67,5 @@ describe('Not Found', () => {
 });
 
 describe('API v1', () => {
-  require('./routes/api_v1-spec');
+  require('./routes/api_v1-spec'); // eslint-disable-line global-require
 });

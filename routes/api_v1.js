@@ -12,30 +12,28 @@ const HttpError = require('@starefossen/node-http-error');
 const router = express.Router;
 const api = router();
 
-api.use(function apiUseLibrato(req, res, next) {
+api.use((req, res, next) => {
   librato.logRequest(req.method);
 
-  res.once('close', function resOnceClosedCb() {
+  res.once('close', () => {
     librato.logResponse('closed');
     return sentry.captureResClose(res);
   });
 
-  res.once('finish', function resOnceFinishedCb() {
-    return librato.logResponse(res.statusCode);
-  });
+  res.once('finish', () => librato.logResponse(res.statusCode));
 
   return next();
 });
 
-api.get('/', function apiGetIndex(req, res) {
-  return res.status(204).end();
-});
+api.get('/', (req, res) => res.status(204).end());
 
 const uuid = require('uuid');
 const extname = require('path').extname;
+const diskStorage = require('multer').diskStorage;
+const tmpdir = require('os').tmpdir;
 const multer = require('multer')({
-  storage: require('multer').diskStorage({
-    destination: require('os').tmpdir(),
+  storage: diskStorage({
+    destination: tmpdir(),
     filename: function multerFilenameCb(req, file, cb) {
       const ext = extname(file.originalname).substr(1).toLowerCase() || 'jpg';
       return cb(null, `${uuid.v4()}.${ext}`);
@@ -43,7 +41,7 @@ const multer = require('multer')({
   }),
 });
 
-api.post('/upload', multer.single('image'), function apiGetUpload(req, res, next) {
+api.post('/upload', multer.single('image'), (req, res, next) => {
   librato.logImageUpload();
 
   if (!/(jpe?g|png|gif)$/i.test(req.file.originalname)) {
@@ -52,7 +50,7 @@ api.post('/upload', multer.single('image'), function apiGetUpload(req, res, next
 
   const t1 = new Date().getTime();
 
-  s3.upload(req.file.path, {}, function s3UploadCb(error, versions, meta) {
+  return s3.upload(req.file.path, {}, (error, versions, meta) => {
     if (error) { return next(error); }
 
     librato.logImageProcessingTime(t1, new Date().getTime());
@@ -72,7 +70,6 @@ api.post('/upload', multer.single('image'), function apiGetUpload(req, res, next
     const images = versions.splice(0, versions.length - 1);
 
     for (const image of images) {
-      image.aspect = undefined;
       image.awsImageAcl = undefined;
       image.key = undefined;
       image.maxHeight = undefined;
@@ -81,13 +78,11 @@ api.post('/upload', multer.single('image'), function apiGetUpload(req, res, next
       image.suffix = undefined;
     }
 
-    if (res._headerSent) {
+    if (res._headerSent) { // eslint-disable-line no-underscore-dangle
       sentry.captureHeaderSent(req, images);
     }
 
-    res.status(201);
-
-    res.json({ meta, versions: images });
+    return res.status(201).json({ meta, versions: images });
   });
 });
 

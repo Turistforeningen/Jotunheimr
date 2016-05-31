@@ -1,9 +1,20 @@
+# vi:syntax=json
 {
-    "extends": "airbnb/base",
+    "extends": "airbnb-base",
     "env": {
-      "mocha": true
+      "mocha": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "script",
+      "ecmaFeatures": {
+        "modules": false
+      }
     },
     "rules": {
-      "strict": [0, "never"]
+      "strict": [2, "global"],
+      "no-param-reassign": [2, { "props": false }],
+      "no-underscore-dangle": [2, { "allow": ["_id", "_hasOpened"] }]
     }
 }

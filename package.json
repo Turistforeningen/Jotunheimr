@@ -1,6 +1,6 @@
 {
   "name": "jotunheimr",
-  "version": "1.10.2",
+  "version": null,
   "description": "Microservice for processing images and uploading them to a designated bucket on AWS S3",
   "main": "lib/index.js",
   "directories": {
@@ -9,10 +9,13 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp supervisor index.js",
+    "codacy-coverage": "codacy-coverage",
+    "cover": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- -r test/support/env test",
     "lint": "eslint index.js lib test routes",
-    "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test",
-    "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
+    "semantic-release": "semantic-release",
+    "start": "TMPDIR=/tmp supervisor index.js",
+    "test": "mocha -bc --check-leaks -R tap -r test/support/env test",
+    "test:watch": "mocha -wbc --check-leaks -R progress -r test/support/env test"
   },
   "repository": {
     "type": "git",
@@ -34,23 +37,27 @@
   "homepage": "https://github.com/Turistforeningen/Jotunheimr",
   "dependencies": {
     "@starefossen/node-http-error": "^1.0.1",
-    "compression": "^1.6.0",
+    "compression": "^1.6.2",
     "dms2dec": "^1.1.0",
     "express": "^4.13.3",
     "librato": "^0.1.0",
     "morgan": "^1.6.0",
     "multer": "^1.1.0",
-    "newrelic": "^1.24.0",
-    "raven": "^0.9.0",
+    "newrelic": "^1.28.0",
+    "raven": "^0.11.0",
     "response-time": "^2.3.0",
     "s3-uploader": "^1.1.0",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.2"
   },
   "devDependencies": {
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^2.1.1",
-    "mocha": "^2.3.4",
+    "codacy-coverage": "^1.1.3",
+    "eslint": "^2.11.0",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "semantic-release": "^4.3.5",
     "supertest": "^1.1.0",
-    "supervisor": "^0.9.1"
+    "supervisor": "^0.10.0"
   }
 }
