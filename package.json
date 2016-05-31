@@ -1,6 +1,6 @@
 {
   "name": "jotunheimr",
-  "version": "1.10.2",
+  "version": null,
   "description": "Microservice for processing images and uploading them to a designated bucket on AWS S3",
   "main": "lib/index.js",
   "directories": {
@@ -9,10 +9,13 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "TMPDIR=/tmp supervisor index.js",
+    "codacy-coverage": "codacy-coverage",
+    "cover": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- -r test/support/env -R spec test/**/",
     "lint": "eslint index.js lib test routes",
+    "semantic-release": "semantic-release",
+    "start": "TMPDIR=/tmp supervisor index.js",
     "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test",
-    "watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
+    "test:watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
   },
   "repository": {
     "type": "git",
