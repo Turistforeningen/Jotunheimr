@@ -1,5 +1,11 @@
-Jötunheimr [![Build status](https://img.shields.io/wercker/ci/552f80a659f9ea486f002130.svg "Build status")](https://app.wercker.com/project/bykey/b8d659a121c19fa628f5e982b3daea04)
-==========
+# Jötunheimr
+
+[![Build status](https://img.shields.io/wercker/ci/552f80a659f9ea486f002130.svg "Build status")](https://app.wercker.com/project/bykey/b8d659a121c19fa628f5e982b3daea04)
+[![Codacy](https://img.shields.io/codacy/59d607d0e311408885e418004068ea58.svg "Codacy")](https://www.codacy.com/app/starefossen/Jotunheimr)
+[![NPM downloads](https://img.shields.io/npm/dm/jotunheimr.svg "NPM downloads")](https://www.npmjs.com/package/jotunheimr)
+[![NPM version](https://img.shields.io/npm/v/jotunheimr.svg "NPM version")](https://www.npmjs.com/package/jotunheimr)
+[![Node version](https://img.shields.io/node/v/jotunheimr.svg "Node version")](https://www.npmjs.com/package/jotunheimr)
+[![Dependency status](https://img.shields.io/david/Turistforeningen/Jotunheimr.svg "Dependency status")](https://david-dm.org/Turistforeningen/Jotunheimr)
 
 ![Smørstabbrean by Per Roger Lauritzen](https://raw.githubusercontent.com/Turistforeningen/Jotunheimr/master/images/jotunheimen.png)
 
