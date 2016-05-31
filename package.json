@@ -10,12 +10,12 @@
   },
   "scripts": {
     "codacy-coverage": "codacy-coverage",
-    "cover": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- -r test/support/env -R spec test/**/",
+    "cover": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- -r test/support/env test",
     "lint": "eslint index.js lib test routes",
     "semantic-release": "semantic-release",
     "start": "TMPDIR=/tmp supervisor index.js",
-    "test": "NODE_ENV=test TMPDIR=/tmp mocha -b -c --check-leaks test",
-    "test:watch": "NODE_ENV=test TMPDIR=/tmp mocha -w -b -c --check-leaks test"
+    "test": "mocha -bc --check-leaks -R tap -r test/support/env test",
+    "test:watch": "mocha -wbc --check-leaks -R progress -r test/support/env test"
   },
   "repository": {
     "type": "git",
