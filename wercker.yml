@@ -1,8 +1,4 @@
-box: node:argon
-
-services:
-  - redis
-  - mongo
+box: starefossen/node-imagemagick:4-6
 
 build:
   steps:
