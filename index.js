@@ -21,7 +21,7 @@ app.use(responseTime());
 const origins = new Set((process.env.ALLOW_ORIGINS || '').split(','));
 const url = require('url');
 
-app.use(function appUseCoors(req, res, next) {
+app.use((req, res, next) => {
   if (req.get('Origin')) {
     const origin = url.parse(req.get('Origin'));
 
@@ -43,21 +43,21 @@ app.use(function appUseCoors(req, res, next) {
   return next();
 });
 
-app.all('/CloudHealthCheck', function appGetCloudCheck(req, res) {
+app.all('/CloudHealthCheck', (req, res) => {
   res.status(200);
 
   if (req.method === 'HEAD') {
     return res.end();
   }
 
-  res.json({
+  return res.json({
     message: 'System OK',
   });
 });
 
 app.use('/api/v1/', require('./routes/api_v1'));
 
-app.use(function appUseNotFound(req, res, next) {
+app.use((req, res, next) => {
   res.status(404).json({
     message: 'Not Found',
   });
@@ -66,7 +66,7 @@ app.use(function appUseNotFound(req, res, next) {
 app.use(raven.middleware.express.requestHandler(sentry));
 app.use(raven.middleware.express.errorHandler(sentry));
 
-app.use(function appUseErrorHandler(err, req, res, next) {
+app.use((err, req, res, next) => {
   if (err.code === 'LIMIT_UNEXPECTED_FILE') {
     err.message = `Unknown form field "${err.field}"`;
     err.code = 400;
@@ -85,12 +85,12 @@ app.use(function appUseErrorHandler(err, req, res, next) {
     return res.end();
   }
 
-  res.json({
+  return res.json({
     message: err.message || 'Unknown error',
   });
 });
 
 if (!module.parent) {
   app.listen(8080);
-  console.log(`Server is listening on port 8080`);
+  console.log('Server is listening on port 8080');
 }
