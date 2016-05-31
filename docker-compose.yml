@@ -1,14 +1,18 @@
-dev:
-  image: starefossen/node-imagemagick:4-6
-  working_dir: /usr/src/app
-  volumes:
-    - ".:/usr/src/app"
-  ports:
-    - "8080"
-  env_file: .env
-  environment:
-    - NODE_ENV=development
-    - ALLOW_ORIGINS=tur.app.dnt.privat,example1.com,example2.com
-    - VIRTUAL_HOST=bilde.app.dnt.privat
-    - VIRTUAL_PORT=8080
-  command: npm start
+version: '2'
+
+services:
+  node:
+    image: starefossen/node-imagemagick:4-6
+    network_mode: 'bridge'
+    working_dir: /usr/src/app
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - "8080"
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+      - ALLOW_ORIGINS=tur.app.dnt.privat,example1.com,example2.com
+      - VIRTUAL_HOST=bilde.app.dnt.privat
+      - VIRTUAL_PORT=8080
+    command: npm start
