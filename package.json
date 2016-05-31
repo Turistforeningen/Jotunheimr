@@ -2,7 +2,13 @@
   "name": "jotunheimr",
   "version": null,
   "description": "Microservice for processing images and uploading them to a designated bucket on AWS S3",
-  "main": "lib/index.js",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib",
+    "routes",
+    "test"
+  ],
   "directories": {
     "test": "test",
     "src": "src",
