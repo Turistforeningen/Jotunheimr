@@ -9,11 +9,6 @@
     "routes",
     "test"
   ],
-  "directories": {
-    "test": "test",
-    "src": "src",
-    "lib": "lib"
-  },
   "scripts": {
     "codacy-coverage": "codacy-coverage",
     "cover": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- -r test/support/env test",
