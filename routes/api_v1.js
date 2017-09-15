@@ -56,15 +56,23 @@ api.post('/upload', multer.single('image'), (req, res, next) => {
     librato.logImageProcessingTime(t1, new Date().getTime());
 
     if (meta.exif && meta.exif.GPSLongitude && meta.exif.GPSLatitude) {
-      meta.geojson = {
-        type: 'Point',
-        coordinates: dms2dec(
-          meta.exif.GPSLatitude,
-          meta.exif.GPSLatitudeRef,
-          meta.exif.GPSLongitude,
-          meta.exif.GPSLongitudeRef
-        ).reverse(),
-      };
+      const coords = dms2dec(
+        meta.exif.GPSLatitude,
+        meta.exif.GPSLatitudeRef,
+        meta.exif.GPSLongitude,
+        meta.exif.GPSLongitudeRef
+      ).reverse();
+
+      const validCoords = coords.filter(c => (
+        (typeof c === 'number') && (isNaN(c) === false)
+      ));
+
+      if (validCoords.length === 2) {
+        meta.geojson = {
+          type: 'Point',
+          coordinates: coords,
+        };
+      }
     }
 
     const images = versions.splice(0, versions.length - 1);
