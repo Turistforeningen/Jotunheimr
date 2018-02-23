@@ -98,6 +98,7 @@ app.use((err, req, res, next) => {
 });
 
 if (!module.parent) {
-  app.listen(8080);
-  console.log('Server is listening on port 8080');
+  const port = process.env.PORT_WWW || 8080;
+  app.listen(port);
+  console.log(`Server is listening on port ${port}`);
 }
