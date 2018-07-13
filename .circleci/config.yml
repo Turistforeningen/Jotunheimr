@@ -77,14 +77,14 @@ jobs:
           when: on_success
           command: |
             chmod +x .circleci/notify-slack.sh
-            ./.circleci/notify-slack.sh Hytteadmin build-publish-deploy true
+            ./.circleci/notify-slack.sh Jotunheimr build-publish-deploy true
 
       - run: 
           name: notify slack on failure
           when: on_fail
           command: |
             chmod +x .circleci/notify-slack.sh
-            ./.circleci/notify-slack.sh Hytteadmin build-publish-deploy false                      
+            ./.circleci/notify-slack.sh Jotunheimr build-publish-deploy false                      
   
   deploy-to-dev:
     docker:
