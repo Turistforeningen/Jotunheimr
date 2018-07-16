@@ -91,9 +91,9 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: 10m
 
   tls:
-    - secretName: jotunheimr-beta-tls
+    - secretName: beta-dnt-org-tls
       hosts:
         - jotunheimr.beta.dnt.org
 cert:
-  enabled: true
+  enabled: false
   issuer: "letsencrypt-production"
