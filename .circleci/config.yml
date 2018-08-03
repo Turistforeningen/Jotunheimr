@@ -17,15 +17,15 @@ jobs:
             npm run lint
             npm test
           environment:
-            AWS_BUCKET_NAME: jotunheimr
             AWS_BUCKET_PATH: k8s_test/
-            AWS_BUCKET_REGION: eu-west-1
 
       - run:
           name: npm coverage
           command: |
             npm run cover
             cat ./coverage/lcov.info | npm run codacy-coverage
+          environment:
+              AWS_BUCKET_PATH: k8s_test/
 
       - run:
           name: npm project security
