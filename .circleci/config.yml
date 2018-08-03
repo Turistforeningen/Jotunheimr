@@ -130,7 +130,7 @@ workflows:
                 - circleci
       - build-image:
           requires:
-            - build-code
+            - verify-code
           context: dnt-k8s-dev-beta
           filters:
             branches:
