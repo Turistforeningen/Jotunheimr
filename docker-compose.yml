@@ -12,7 +12,7 @@ services:
     env_file: .env
     environment:
       - NODE_ENV=development
-      - ALLOW_ORIGINS=tur.app.dnt.privat,example1.com,example2.com
+      - ALLOW_ORIGINS=tur.app.dnt.privat
       - VIRTUAL_HOST=bilde.app.dnt.privat
       - VIRTUAL_PORT=8080
     command: npm start
