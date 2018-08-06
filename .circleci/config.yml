@@ -27,10 +27,10 @@ jobs:
           environment:
               AWS_BUCKET_PATH: k8s_test/
 
-      - run:
-          name: npm project security
-          command: |
-            npm run nsp
+      #- run:
+      #    name: npm project security
+      #    command: |
+      #      npm run nsp
 
       - run:
            name: notify slack on failure
