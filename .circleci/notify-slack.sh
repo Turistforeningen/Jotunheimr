@@ -12,7 +12,7 @@ success=$3 # true or false
 if [ "$success" = true ] ; then
     color="#36a64f"
     button_style="primary"
-    status="was successfull"
+    status="succeeded"
 else
    color="#FF0000"
    button_style="danger"
