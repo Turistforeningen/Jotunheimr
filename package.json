@@ -49,7 +49,7 @@
     "raven": "^0.11.0",
     "response-time": "^2.3.0",
     "s3-uploader": "^1.1.0",
-    "uuid": "^2.0.2"
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "codacy-coverage": "^1.1.3",
